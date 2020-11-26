@@ -39,19 +39,21 @@ def telegramSpoof():
 
             if "message" in res.keys():
                 message = 'message'
-
+            else:
+                message = 'edited_message'            
 
             user_id = res[message]['from']['id']
             date = res[message]['date']
-
+            if "text" not in res['message'].keys():
+                continue
             text = res[message]['text']
             offset = res['update_id'] + 1
             data = ["TG", user_id, text, date]
             print(data)
             q.put(refactor(data))
-#  {'update_id': 911861374, 'message': {'message_id': 117, 'from': {'id': 1222167633, 'is_bot': False, 'first_name': 'Fatih', 'username': 'Ziatzoraf', 'language_code': 'tr'}, 'chat': {'id': 1222167633, 'first_name': 'Fatih', 'username': 'Ziatzoraf', 'type': 'private'}, 'date': 1606213651, 'text': 'Uffff'}}
+#  {'update_id': 911861374, 'message': {'message_id': 117, 'from': {'id':, 'is_bot': False, 'first_name': 'Fatih', 'username': 'Ziatzoraf', 'language_code': 'tr'}, 'chat': {'id': 1222167633, 'first_name': 'Fatih', 'username': 'Ziatzoraf', 'type': 'private'}, 'date': 1606213651, 'text': 'example'}}
 
-def refactor(data):  # {VK or TG} {user_id} {text} {time}
+def refactor(data):  # {TG} {user_id} {text} {time}
     print("AAAAAAA")
     try:
         if data[0] == "TG":
@@ -75,8 +77,6 @@ def discordSender():
 
 if __name__ == "__main__":
     # new thread telegramSpoof
-    # new thread vkSpoof
-    # create threadsafety queue
     # start discordSender
     q = Queue()
 
